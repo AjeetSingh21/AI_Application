@@ -1,0 +1,22 @@
+{
+  "warehouses": [
+    {
+      "id": "WH-A",
+      "location": "WH-A",
+      "stock": 5000,
+      "load": 45
+    },
+    {
+      "id": "WH-B",
+      "location": "WH-B",
+      "stock": 3500,
+      "load": 60
+    },
+    {
+      "id": "WH-C",
+      "location": "HUB-1",
+      "stock": 7000,
+      "load": 30
+    }
+  ]
+}

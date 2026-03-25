@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Connection Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        .pending { color: #eab308; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #2563eb; }
+        pre {
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .log {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 API Connection Diagnostic Tool</h1>
+    
+    <div class="card">
+        <h2>Step 1: Backend Health Check</h2>
+        <button onclick="testBackendHealth()">Test Backend Connection</button>
+        <div id="health-result" class="log"></div>
+    </div>
+
+    <div class="card">
+        <h2>Step 2: Get Orders</h2>
+        <button onclick="getOrders()">Fetch Orders</button>
+        <div id="orders-result" class="log"></div>
+    </div>
+
+    <div class="card">
+        <h2>Step 3: Create Order</h2>
+        <button onclick="createOrder()">Create Test Order</button>
+        <div id="create-result" class="log"></div>
+    </div>
+
+    <div class="card">
+        <h2>Step 4: Run Optimization</h2>
+        <button onclick="runOptimization()">Run Optimization</button>
+        <div id="optimize-result" class="log"></div>
+    </div>
+
+    <div class="card">
+        <h2>Diagnostics</h2>
+        <div id="diagnostics"></div>
+    </div>
+
+    <script>
+        // Configuration
+        const BACKEND_URL = 'http://localhost:8000';
+        
+        function log(elementId, message, type = 'pending') {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<span class="${type}">${message}</span>`;
+        }
+
+        function showDiagnostics(title, data) {
+            const diagEl = document.getElementById('diagnostics');
+            diagEl.innerHTML += `
+                <h3>${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+
+        async function testBackendHealth() {
+            try {
+                log('health-result', 'Connecting to backend...', 'pending');
+                
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log('health-result', '✅ Backend is healthy!', 'success');
+                    showDiagnostics('Health Check Response', data);
+                } else {
+                    log('health-result', `❌ Unexpected status: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log('health-result', 
+                    `❌ Failed to connect: ${error.message}<br>
+                     Make sure backend is running: py -m uvicorn main:app --reload --port 8000`, 
+                    'error');
+            }
+        }
+
+        async function getOrders() {
+            try {
+                log('orders-result', 'Fetching orders...', 'pending');
+                
+                const response = await fetch(`${BACKEND_URL}/orders`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log('orders-result', `✅ Found ${data.length} orders`, 'success');
+                    showDiagnostics('Orders List', data);
+                } else {
+                    log('orders-result', `❌ Error: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log('orders-result', `❌ Failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function createOrder() {
+            try {
+                log('create-result', 'Creating test order...', 'pending');
+                
+                const testOrder = {
+                    location: "AREA-C",
+                    weight: 500,
+                    priority: "high",
+                    deadline: new Date(Date.now() + 86400000).toISOString() // Tomorrow
+                };
+                
+                const response = await fetch(`${BACKEND_URL}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testOrder)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok || response.status === 200) {
+                    log('create-result', `✅ Order created: ${data.id}`, 'success');
+                    showDiagnostics('Created Order', data);
+                } else {
+                    log('create-result', `❌ Error: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log('create-result', `❌ Failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function runOptimization() {
+            try {
+                log('optimize-result', 'Running optimization...', 'pending');
+                
+                const response = await fetch(`${BACKEND_URL}/optimize`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log('optimize-result', 
+                        `✅ Optimized ${data.assignments?.length || 0} orders`, 
+                        'success');
+                    showDiagnostics('Optimization Results', data);
+                } else {
+                    log('optimize-result', `❌ Error: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log('optimize-result', `❌ Failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-run diagnostics on page load
+        window.addEventListener('load', () => {
+            document.getElementById('diagnostics').innerHTML = `
+                <p><strong>Backend URL:</strong> ${BACKEND_URL}</p>
+                <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+                <p><em>Click buttons above to run tests...</em></p>
+            `;
+        });
+    </script>
+</body>
+</html>

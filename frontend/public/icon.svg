@@ -1,0 +1,45 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="url(#bgGrad)"/>
+  
+  <!-- AI Brain / Network Icon -->
+  <g transform="translate(256, 256)">
+    <!-- Central node -->
+    <circle r="40" fill="url(#iconGrad)" opacity="0.9"/>
+    
+    <!-- Surrounding nodes -->
+    <circle cx="-120" cy="-80" r="30" fill="url(#iconGrad)" opacity="0.8"/>
+    <circle cx="120" cy="-80" r="30" fill="url(#iconGrad)" opacity="0.8"/>
+    <circle cx="-120" cy="80" r="30" fill="url(#iconGrad)" opacity="0.8"/>
+    <circle cx="120" cy="80" r="30" fill="url(#iconGrad)" opacity="0.8"/>
+    
+    <!-- Connection lines -->
+    <line x1="-80" y1="-60" x2="80" y2="-60" stroke="white" stroke-width="8" opacity="0.6"/>
+    <line x1="-80" y1="60" x2="80" y2="60" stroke="white" stroke-width="8" opacity="0.6"/>
+    <line x1="-90" y1="-50" x2="-90" y2="50" stroke="white" stroke-width="8" opacity="0.6"/>
+    <line x1="90" y1="-50" x2="90" y2="50" stroke="white" stroke-width="8" opacity="0.6"/>
+    
+    <!-- Outer ring -->
+    <circle r="180" fill="none" stroke="white" stroke-width="4" opacity="0.3" stroke-dasharray="20,10"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="256" y="420" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle" opacity="0.9">
+    SmartHub
+  </text>
+  <text x="256" y="460" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle" opacity="0.7">
+    AI Supply Chain
+  </text>
+</svg>

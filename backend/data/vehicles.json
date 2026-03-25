@@ -1,0 +1,28 @@
+{
+  "vehicles": [
+    {
+      "id": "VEH-001",
+      "type": "Truck",
+      "capacity": 1000,
+      "current_load": 200
+    },
+    {
+      "id": "VEH-002",
+      "type": "Van",
+      "capacity": 500,
+      "current_load": 100
+    },
+    {
+      "id": "VEH-003",
+      "type": "Truck",
+      "capacity": 1200,
+      "current_load": 300
+    },
+    {
+      "id": "VEH-004",
+      "type": "Large Truck",
+      "capacity": 1500,
+      "current_load": 150
+    }
+  ]
+}
