@@ -24,7 +24,7 @@ const getApiClient = async () => {
     console.log('Initializing API client with base URL:', baseUrl);
     
     apiClient = axios.create({
-      baseURL: baseUrl,
+      baseURL: baseUrl.replace(/\/$/, ''),
       headers: {
         'Content-Type': 'application/json',
       },
