@@ -13,7 +13,7 @@ const getBaseUrl = async () => {
   
   // For browser development with Vite proxy
   // Return empty string to use relative URLs (proxied by Vite)
-  return '';
+  return import.meta.env.VITE_API_URL;
 };
 
 // Create axios instance with dynamic base URL
